@@ -120,4 +120,18 @@ class JsonParserTest {
         assertNotNull(actual);
         assertEquals(expected, actual);
     }
+
+    @Test
+    @DisplayName("toJson: with nested object")
+    void testToJsonWithNestedObject() throws JsonProcessingException {
+        var argument = TestDataBuilder.aData()
+                .withInnerObject(TestDataBuilder.aData()
+                        .build())
+                .build();
+        var expected = objectMapper.writeValueAsString(argument);
+
+        var actual = parser.fromObject(argument);
+
+        assertThatJson(actual).isEqualTo(expected);
+    }
 }
