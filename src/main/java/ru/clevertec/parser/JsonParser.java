@@ -9,7 +9,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-public class JsonParser implements Parser<Object, String>{
+
+public class JsonParser implements Parser<Object, String> {
     private static final String FIELD_WRAP = "\"%s\":%s";
 
     @Override
@@ -26,7 +27,8 @@ public class JsonParser implements Parser<Object, String>{
 
     @Override
     public Object toObject(String source, Class<Object> rootType) {
-        return null;
+        throw new UnsupportedOperationException();
+        //TODO to be implemented
     }
 
     private StringBuilder parse(Object object) throws IllegalAccessException {
@@ -68,10 +70,10 @@ public class JsonParser implements Parser<Object, String>{
                 var map = (Map<Object, Object>) object;
 
                 for (var entry : map.entrySet()) {
-                    var keyString = String.format(Type.getType(entry.getKey()).getFormat(), parse(entry.getKey()));
-                    var valueString = String.format(Type.getType(entry.getValue()).getFormat(), parse(entry.getValue()));
+                    var keyString = parse(entry.getKey()).toString().replace(",", "");
+                    var valueString = parse(entry.getValue());
 
-                    innerBuilder.append(String.format("%s:%s,", keyString, valueString));
+                    innerBuilder.append(String.format("%s:%s", keyString, valueString));
                 }
             }
         }
